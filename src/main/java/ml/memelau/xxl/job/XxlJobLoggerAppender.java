@@ -5,8 +5,8 @@ import ch.qos.logback.core.AppenderBase;
 import com.xxl.job.core.log.XxlJobFileAppender;
 import com.xxl.job.core.log.XxlJobLogger;
 import lombok.SneakyThrows;
+import org.joor.Reflect;
 
-import java.lang.reflect.Method;
 import java.util.Optional;
 
 
@@ -25,10 +25,9 @@ public class XxlJobLoggerAppender extends AppenderBase<ILoggingEvent> {
 
     @SneakyThrows
     private void doLog(ILoggingEvent event) {
-        Method logDetail = XxlJobLogger.class.getDeclaredMethod("logDetail", StackTraceElement.class, String.class);
-        logDetail.setAccessible(true);
-        logDetail.invoke(null, event.getCallerData()[0],
-                String.format("[%s] [%s] %s", event.getLevel(), event.getLoggerName(), event.getFormattedMessage()));
+        Reflect.on(XxlJobLogger.class)
+               .call("logDetail",
+                       event.getCallerData()[0], String.format("[%s] [%s] %s", event.getLevel(), event.getLoggerName(), event.getFormattedMessage()));
     }
 
 }
