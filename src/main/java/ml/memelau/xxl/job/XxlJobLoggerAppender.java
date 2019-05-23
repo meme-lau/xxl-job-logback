@@ -27,7 +27,8 @@ public class XxlJobLoggerAppender extends AppenderBase<ILoggingEvent> {
     private void doLog(ILoggingEvent event) {
         Reflect.on(XxlJobLogger.class)
                .call("logDetail",
-                       event.getCallerData()[0], String.format("[%s] [%s] %s", event.getLevel(), event.getLoggerName(), event.getFormattedMessage()));
+                       event.getCallerData()[0],
+                       String.format("[%s] [%s] %s", event.getLevel(), event.getLoggerName(), event.getFormattedMessage()));
     }
 
 }
